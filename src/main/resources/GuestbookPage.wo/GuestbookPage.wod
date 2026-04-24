@@ -1,4 +1,4 @@
-EntryCount  : WOString      { value = entryCount; }
+EntryCount  : WOString      { value = visitorCount; }
 
 SignForm    : WOForm        { action = submitEntry; }
 NameField   : WOTextField   { value = authorName; size = 40; }

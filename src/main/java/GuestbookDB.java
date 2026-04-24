@@ -36,6 +36,15 @@ public class GuestbookDB {
             "  message    LONGVARCHAR   NOT NULL" +
             ")"
         );
+        st.execute(
+            "CREATE TABLE IF NOT EXISTS VISITOR_COUNT (count INTEGER DEFAULT 0)"
+        );
+        ResultSet rs = st.executeQuery("SELECT COUNT(*) FROM VISITOR_COUNT");
+        rs.next();
+        if (rs.getInt(1) == 0) {
+            st.execute("INSERT INTO VISITOR_COUNT VALUES (0)");
+        }
+        rs.close();
         conn.commit();
         st.close();
     }
@@ -80,6 +89,23 @@ public class GuestbookDB {
             ps.close();
         } catch (SQLException e) {
             e.printStackTrace();
+        }
+    }
+
+    public synchronized int incrementAndGetVisitorCount() {
+        try {
+            Statement st = conn.createStatement();
+            st.execute("UPDATE VISITOR_COUNT SET count = count + 1");
+            ResultSet rs = st.executeQuery("SELECT count FROM VISITOR_COUNT");
+            rs.next();
+            int n = rs.getInt(1);
+            rs.close();
+            conn.commit();
+            st.close();
+            return n;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return 0;
         }
     }
 

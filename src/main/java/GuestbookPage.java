@@ -11,8 +11,17 @@ public class GuestbookPage extends WOComponent {
 
     public GuestbookEntry currentEntry;
 
+    private int _visitorCount = -1;
+
     public GuestbookPage(WOContext context) {
         super(context);
+    }
+
+    public int visitorCount() {
+        if (_visitorCount < 0) {
+            _visitorCount = GuestbookDB.shared().incrementAndGetVisitorCount();
+        }
+        return _visitorCount;
     }
 
     public List<GuestbookEntry> entries() {
