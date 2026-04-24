@@ -5,7 +5,7 @@ NameField   : WOTextField   { value = authorName; size = 40; }
 EmailField  : WOTextField   { value = email;    size = 40; }
 LocationField : WOTextField { value = location; size = 40; }
 MessageField  : WOText      { value = message;  rows = 5; cols = 42; }
-SubmitBtn   : WOSubmitButton { value = "Sign the Guestbook!"; action = submitEntry; class = "aqua-btn"; }
+SubmitBtn   : WOSubmitButton { value = "Submit"; action = submitEntry; class = "aqua-btn"; }
 
 HasEntries  : WOConditional { condition = entryCount; negate = false; }
 NoEntries   : WOConditional { condition = entryCount; negate = true;  }

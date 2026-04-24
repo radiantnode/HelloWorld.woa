@@ -83,18 +83,19 @@
     .toolbar-left  { display: table-cell; vertical-align: middle; font-size: 11px; color: #444; }
     .toolbar-right { display: table-cell; vertical-align: middle; text-align: right; }
 
-    /* Visitor badge */
-    .visitor-badge {
+    .count-pill {
       display: inline-block;
       background: linear-gradient(to bottom, #5a5a5a, #3a3a3a);
       color: #fff;
       font-size: 10px;
-      padding: 2px 8px;
+      font-weight: bold;
+      min-width: 18px;
+      padding: 1px 6px;
       border-radius: 8px;
-      box-shadow: inset 0 1px 0 rgba(255,255,255,0.15), 0 1px 2px rgba(0,0,0,0.4);
-      letter-spacing: 0.02em;
+      text-align: center;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.15), 0 1px 2px rgba(0,0,0,0.35);
+      vertical-align: middle;
     }
-    .visitor-badge strong { color: #7df; }
 
     /* Section header (like a Finder column header) */
     .section-header {
@@ -209,11 +210,26 @@
     }
 
     .entry {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
       border-bottom: 1px solid #e8e8e8;
       padding: 10px 14px;
     }
     .entry:nth-child(even) { background: #f4f7ff; }
     .entry:last-child { border-bottom: none; }
+
+    .entry-icon {
+      flex-shrink: 0;
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='36' height='36' viewBox='0 0 36 36'%3E%3Cdefs%3E%3ClinearGradient id='ug' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0%25' stop-color='%2382c4fd'/%3E%3Cstop offset='100%25' stop-color='%231460d8'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='36' height='36' rx='8' fill='url(%23ug)'/%3E%3Ccircle cx='18' cy='13' r='7' fill='white'/%3E%3Cpath d='M2 36 C2 23 8 21 18 21 C28 21 34 23 34 36 Z' fill='white'/%3E%3C/svg%3E");
+      background-size: cover;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.25);
+    }
+
+    .entry-content { flex: 1; min-width: 0; }
 
     .entry-header { display: table; width: 100%; margin-bottom: 4px; }
     .entry-name {
@@ -288,7 +304,7 @@
       <webobject name="HomeLink"><span class="aqua-btn aqua-btn-secondary aqua-btn-sm">&lsaquo; Back</span></webobject>
     </div>
     <div class="toolbar-right">
-      <span class="visitor-badge">Visitor <strong><webobject name="EntryCount"></webobject></strong></span>
+      <span style="font-size:11px;color:#444;text-shadow:0 1px 0 rgba(255,255,255,0.8);">Visitor <span class="count-pill"><webobject name="EntryCount"></webobject></span></span>
     </div>
   </div>
 
@@ -326,15 +342,18 @@
     <webobject name="HasEntries">
       <webobject name="EntryRep">
         <div class="entry">
-          <div class="entry-header">
-            <span class="entry-name"><webobject name="EntryName"/></span>
-            <span class="entry-date"><webobject name="EntryDate"/></span>
+          <div class="entry-icon"></div>
+          <div class="entry-content">
+            <div class="entry-header">
+              <span class="entry-name"><webobject name="EntryName"/></span>
+              <span class="entry-date"><webobject name="EntryDate"/></span>
+            </div>
+            <div class="entry-meta">
+              <webobject name="ShowEmail">&#9993;&nbsp;<a href="mailto:"><webobject name="EntryEmail"/></a>&nbsp;&nbsp;</webobject>
+              <webobject name="ShowLocation">&#127757;&nbsp;<webobject name="EntryLocation"/></webobject>
+            </div>
+            <div class="entry-body"><webobject name="EntryMessage"/></div>
           </div>
-          <div class="entry-meta">
-            <webobject name="ShowEmail">&#9993;&nbsp;<a href="mailto:"><webobject name="EntryEmail"/></a>&nbsp;&nbsp;</webobject>
-            <webobject name="ShowLocation">&#127757;&nbsp;<webobject name="EntryLocation"/></webobject>
-          </div>
-          <div class="entry-body"><webobject name="EntryMessage"/></div>
         </div>
       </webobject>
     </webobject>
