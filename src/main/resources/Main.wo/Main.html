@@ -90,13 +90,8 @@
     }
     .toolbar .app-icon {
       display: inline-block;
-      width: 16px;
-      height: 16px;
-      background: linear-gradient(135deg, #6eb4ff, #0057d8);
-      border-radius: 3px;
       vertical-align: middle;
-      margin-right: 5px;
-      box-shadow: 0 1px 2px rgba(0,0,0,0.4);
+      margin-right: 6px;
     }
 
     /* Content area */
@@ -231,7 +226,27 @@
 
   <!-- Toolbar -->
   <div class="toolbar">
-    <span class="app-icon"></span>
+    <span class="app-icon"><svg width="22" height="22" viewBox="0 0 22 22" xmlns="http://www.w3.org/2000/svg" style="display:block;">
+      <defs>
+        <radialGradient id="aig" cx="38%" cy="32%" r="65%">
+          <stop offset="0%"   stop-color="#8ed6ff"/>
+          <stop offset="55%"  stop-color="#1a72e8"/>
+          <stop offset="100%" stop-color="#083898"/>
+        </radialGradient>
+        <clipPath id="aic"><circle cx="11" cy="11" r="9.5"/></clipPath>
+      </defs>
+      <circle cx="11" cy="11.6" r="9.5" fill="rgba(0,0,0,0.18)"/>
+      <circle cx="11" cy="11"   r="9.5" fill="url(#aig)"/>
+      <g clip-path="url(#aic)" fill="none" stroke="rgba(255,255,255,0.28)" stroke-width="0.7">
+        <line x1="1.5" y1="11" x2="20.5" y2="11"/>
+        <line x1="1.5" y1="7.5" x2="20.5" y2="7.5"/>
+        <line x1="1.5" y1="14.5" x2="20.5" y2="14.5"/>
+        <ellipse cx="11" cy="11" rx="3.5" ry="9.5"/>
+        <ellipse cx="11" cy="11" rx="7"   ry="9.5"/>
+      </g>
+      <ellipse cx="8.5" cy="7.5" rx="3.8" ry="2.2" fill="rgba(255,255,255,0.48)" clip-path="url(#aic)"/>
+      <circle  cx="11"  cy="11"  r="9.5"  fill="none" stroke="rgba(0,20,100,0.35)" stroke-width="0.6"/>
+    </svg></span>
     WebObjects Application &mdash; <webobject name="AppName"></webobject>
   </div>
 
@@ -259,7 +274,7 @@
       </div>
     </div>
 
-    <webobject name="GuestbookLink"><span class="aqua-btn">&#9733; Sign the Guestbook</span></webobject>
+    <webobject name="GuestbookLink"><span class="aqua-btn">Sign the Guestbook</span></webobject>
     <a href="https://github.com/radiantnode/HelloWorld.woa" class="aqua-btn aqua-btn-secondary">GitHub Repo</a>
   </div>
 
