@@ -57,7 +57,7 @@ docker compose down
 
 The database is **HSQLDB** — a pure-Java embedded database that was everywhere in early-2000s Java enterprise apps. No separate container, no service to manage; it just writes files to `./data/guestbook/` and persists across restarts.
 
-(We tried FrontBase for maximum retro points. FrontBase's website is running a broken WebObjects app. The JDBC driver appears to have been erased from the internet. The x86 Docker image crashes during initialization on Apple Silicon. FrontBase wins the award for most retro by actually being inaccessible.)
+🏆 _We tried FrontBase for maximum retro points. FrontBase's website is running a broken WebObjects app. The JDBC driver appears to have been erased from the internet. The x86 Docker image crashes during initialization on Apple Silicon. FrontBase wins the award for most retro by actually being inaccessible._
 
 ## The guestbook
 
@@ -75,7 +75,9 @@ WebObjects in servlet mode is not simple to set up. The framework has specific e
 - The `WOClasspath` in `web.xml` **must** be newline-separated. The tokenizer uses `\r\n` as its delimiter, not `:`. A colon-separated path on Linux is treated as one giant token and the whole thing breaks.
 - Application classes have to be in `WEB-INF/lib/HelloWorld.jar` (for the servlet classloader) AND in the `.woa` bundle path (for bundle detection). Two copies, two purposes.
 
-It took a while to figure all this out. The CLAUDE.md has the gory details if you want them.
+It took a while to figure all this out. The [CLAUDE.md](CLAUDE.md) has the gory details if you want them.
+
+🤔 Curious about those wild-looking URLs (`/wo/qatqoDY6ea29X0I4B1Jodw/0.7`)? [DEMYSTIFYING_WEBOBJECTS_URLS.md](DEMYSTIFYING_WEBOBJECTS_URLS.md) breaks down every segment.
 
 ## Project structure
 
