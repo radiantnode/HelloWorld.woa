@@ -1,0 +1,3 @@
+WOApplicationName = HelloWorld
+WOApplicationClass = Application
+WODirectConnectEnabled = false

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://java.sun.com/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+                             http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+         version="3.0">
+
+  <!--
+    All of these are read via ServletContext.getInitParameter() so they must
+    be <context-param>, not servlet <init-param>.
+
+    WOROOT / LOCALROOT / WOAINSTALLROOT are required by WO's WOROOT mode.
+      WOAINSTALLROOT=/opt/woapps → WO looks for HelloWorld.woa there.
+
+    WOClasspath entries MUST be newline-separated.
+      WOServletAdaptor.tokenizeClasspath() uses StringTokenizer with "\r\n"
+      as delimiters — colon-separated paths are never split on Linux.
+      Each entry is .trim()'d, so XML indentation whitespace is harmless.
+
+    The WOAINSTALLROOT and WEBINFROOT tokens in WOClasspath are substituted
+    by WOServletAdaptor.getRealPath() before the .woa/ scan and classloader
+    URL construction. WO scans each (file) classpath entry for ".woa/" to
+    set mainBundlePath; that path is then used for template lookup.
+  -->
+  <context-param>
+    <param-name>WOROOT</param-name>
+    <param-value>/opt</param-value>
+  </context-param>
+
+  <context-param>
+    <param-name>LOCALROOT</param-name>
+    <param-value>/opt</param-value>
+  </context-param>
+
+  <context-param>
+    <param-name>WOAINSTALLROOT</param-name>
+    <param-value>/opt/woapps</param-value>
+  </context-param>
+
+  <context-param>
+    <param-name>WOApplicationClass</param-name>
+    <param-value>Application</param-value>
+  </context-param>
+
+  <context-param>
+    <param-name>WOClasspath</param-name>
+    <param-value>
+WOAINSTALLROOT/HelloWorld.woa/Contents/Resources/Java/HelloWorld.jar
+WEBINFROOT/lib/JavaWOJSPServlet-5.4.3.jar
+WEBINFROOT/lib/JavaWebObjects-5.4.3.jar
+WEBINFROOT/lib/JavaFoundation-5.4.3.jar
+WEBINFROOT/lib/JavaEOControl-5.4.3.jar
+WEBINFROOT/lib/JavaEOAccess-5.4.3.jar
+    </param-value>
+  </context-param>
+
+  <servlet>
+    <servlet-name>WOAdaptor</servlet-name>
+    <servlet-class>com.webobjects.jspservlet.WOServletAdaptor</servlet-class>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>WOAdaptor</servlet-name>
+    <url-pattern>/WebObjects/*</url-pattern>
+  </servlet-mapping>
+
+</web-app>

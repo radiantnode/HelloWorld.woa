@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                             http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.example</groupId>
+  <artifactId>HelloWorld</artifactId>
+  <version>1.0</version>
+  <packaging>war</packaging>
+
+  <repositories>
+    <repository>
+      <id>wocommunity</id>
+      <name>WOCommunity Maven Repository</name>
+      <url>https://maven.wocommunity.org/content/groups/public</url>
+    </repository>
+  </repositories>
+
+  <dependencies>
+    <!-- Core WebObjects 5.4.3 frameworks -->
+    <dependency>
+      <groupId>com.webobjects</groupId>
+      <artifactId>JavaWebObjects</artifactId>
+      <version>5.4.3</version>
+      <!-- JavaXML bundles Xerces which conflicts with the JDK 11 XML stack -->
+      <exclusions>
+        <exclusion>
+          <groupId>com.webobjects</groupId>
+          <artifactId>JavaXML</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>com.webobjects</groupId>
+      <artifactId>JavaFoundation</artifactId>
+      <version>5.4.3</version>
+    </dependency>
+    <!-- WOApplication static init references EOModelGroup from this framework -->
+    <dependency>
+      <groupId>com.webobjects</groupId>
+      <artifactId>JavaEOAccess</artifactId>
+      <version>5.4.3</version>
+    </dependency>
+    <!-- Servlet adaptor: contains com.webobjects.jspservlet.WOServletAdaptor -->
+    <dependency>
+      <groupId>com.webobjects</groupId>
+      <artifactId>JavaWOJSPServlet</artifactId>
+      <version>5.4.3</version>
+    </dependency>
+    <!-- Servlet API provided by Tomcat at runtime -->
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>javax.servlet-api</artifactId>
+      <version>3.1.0</version>
+      <scope>provided</scope>
+    </dependency>
+    <!-- Embedded database for guestbook persistence -->
+    <dependency>
+      <groupId>org.hsqldb</groupId>
+      <artifactId>hsqldb</artifactId>
+      <version>2.7.2</version>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.11.0</version>
+        <configuration>
+          <source>11</source>
+          <target>11</target>
+        </configuration>
+      </plugin>
+
+      <!--
+        In WOJarBundle mode, WO scans WEB-INF/lib JARs and registers each as
+        an NSBundle keyed by filename (sans .jar). We need a HelloWorld.jar
+        containing the app classes + .wo templates so that
+        NSBundle.bundleWithName("HelloWorld") (set via WOMainBundle) can
+        find Main.wo/Main.html.
+
+        Build HelloWorld.jar in prepare-package (before WAR is assembled).
+      -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>3.3.0</version>
+        <executions>
+          <execution>
+            <id>app-bundle-jar</id>
+            <phase>prepare-package</phase>
+            <goals><goal>jar</goal></goals>
+            <configuration>
+              <finalName>HelloWorld</finalName>
+              <outputDirectory>${project.build.directory}/bundles</outputDirectory>
+              <archive>
+                <manifestEntries>
+                  <!--
+                    WO uses Implementation-Title as the NSBundle name.
+                    This lets NSBundle.bundleForClass(Main.class) return
+                    the "HelloWorld" bundle so template lookup finds
+                    Main.wo/Main.html inside this JAR.
+                  -->
+                  <Implementation-Title>HelloWorld</Implementation-Title>
+                  <Specification-Title>HelloWorld</Specification-Title>
+                </manifestEntries>
+              </archive>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-war-plugin</artifactId>
+        <version>3.4.0</version>
+        <configuration>
+          <!--
+            In WOROOT mode:
+            - HelloWorld.jar goes into the .woa bundle (Dockerfile COPY) and
+              is listed first in WOClasspath so WOServletAdaptor sees ".woa/"
+              in that path and sets mainBundlePath = /opt/woapps/HelloWorld.woa.
+            - HelloWorld.jar ALSO goes into WEB-INF/lib so that the servlet
+              context classloader can resolve Main/Application classes when
+              NSBundle.classNamed() delegates to that classloader.
+            - .class files are excluded from WEB-INF/classes to avoid the
+              servlet classloader finding classes there before HelloWorld.jar.
+          -->
+          <packagingExcludes>WEB-INF/classes/**/*.class</packagingExcludes>
+          <webResources>
+            <resource>
+              <directory>${project.build.directory}/bundles</directory>
+              <includes><include>HelloWorld.jar</include></includes>
+              <targetPath>WEB-INF/lib</targetPath>
+            </resource>
+          </webResources>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>

@@ -1,0 +1,22 @@
+EntryCount  : WOString      { value = entryCount; }
+
+SignForm    : WOForm        { action = submitEntry; }
+NameField   : WOTextField   { value = authorName; size = 40; }
+EmailField  : WOTextField   { value = email;    size = 40; }
+LocationField : WOTextField { value = location; size = 40; }
+MessageField  : WOText      { value = message;  rows = 5; cols = 42; }
+SubmitBtn   : WOSubmitButton { value = "Sign the Guestbook!"; action = submitEntry; }
+
+HasEntries  : WOConditional { condition = entryCount; negate = false; }
+NoEntries   : WOConditional { condition = entryCount; negate = true;  }
+
+EntryRep      : WORepetition { list = entries; item = currentEntry; }
+EntryName     : WOString     { value = currentEntry.name;     escapeHTML = true; }
+EntryDate     : WOString     { value = currentEntry.postedAt; escapeHTML = true; }
+EntryMessage  : WOString     { value = currentEntry.message;  escapeHTML = true; }
+ShowEmail     : WOConditional { condition = currentEntry.hasEmail;    }
+EntryEmail    : WOString     { value = currentEntry.email;    escapeHTML = true; }
+ShowLocation  : WOConditional { condition = currentEntry.hasLocation; }
+EntryLocation : WOString     { value = currentEntry.location; escapeHTML = true; }
+
+HomeLink    : WOHyperlink    { action = goHome; }

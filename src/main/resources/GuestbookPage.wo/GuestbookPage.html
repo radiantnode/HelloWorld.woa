@@ -1,0 +1,222 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+          "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>*~* My WebObjects Guestbook *~*</title>
+  <style type="text/css">
+    body {
+      background-color: #000033;
+      color: #ffff99;
+      font-family: "Comic Sans MS", "Trebuchet MS", Arial, sans-serif;
+      font-size: 13px;
+      margin: 0;
+      padding: 0;
+    }
+    a { color: #00ffff; }
+    a:visited { color: #ff99ff; }
+
+    .pageWrap  { width: 620px; margin: 0 auto; padding: 16px 0 40px; }
+
+    .banner {
+      background-color: #000066;
+      border: 3px ridge #ff6600;
+      text-align: center;
+      padding: 14px 10px;
+      margin-bottom: 16px;
+    }
+    .banner h1 {
+      margin: 0;
+      font-size: 26px;
+      color: #ffcc00;
+      text-shadow: 2px 2px 4px #ff6600;
+      letter-spacing: 2px;
+    }
+    .banner .sub { font-size: 11px; color: #99ccff; margin-top: 4px; }
+
+    .counter {
+      background: #000044;
+      border: 2px solid #336699;
+      padding: 6px 12px;
+      text-align: center;
+      font-size: 12px;
+      color: #66ff66;
+      margin-bottom: 14px;
+    }
+    .counter strong { font-size: 18px; color: #00ff00; }
+
+    /* ---- Sign form ---- */
+    .signBox {
+      background: #000055;
+      border: 3px double #ff9900;
+      padding: 14px 18px;
+      margin-bottom: 18px;
+    }
+    .signBox h2 {
+      margin: 0 0 12px;
+      color: #ffcc00;
+      font-size: 16px;
+      border-bottom: 1px solid #336699;
+      padding-bottom: 6px;
+    }
+    .signBox table { border-collapse: collapse; width: 100%; }
+    .signBox td { padding: 4px 6px; vertical-align: top; }
+    .signBox td.lbl { width: 90px; color: #99ccff; font-size: 12px; }
+    .signBox input[type=text], .signBox textarea {
+      background: #000022;
+      color: #ffffff;
+      border: 1px solid #336699;
+      font-family: "Courier New", Courier, monospace;
+      font-size: 12px;
+      width: 340px;
+      padding: 3px 5px;
+    }
+    .signBox textarea { height: 80px; resize: vertical; }
+    .signBox .submitRow { text-align: center; padding-top: 10px; }
+    .signBox input[type=submit] {
+      background: #336600;
+      color: #ffff00;
+      border: 2px outset #66cc00;
+      font-family: "Comic Sans MS", Arial, sans-serif;
+      font-size: 13px;
+      font-weight: bold;
+      padding: 4px 20px;
+      cursor: pointer;
+    }
+    .signBox input[type=submit]:hover { background: #448800; }
+    .signBox .reqnote { font-size: 10px; color: #ff9999; margin-top: 8px; }
+
+    /* ---- Entries ---- */
+    .entriesBox {
+      background: #000044;
+      border: 3px double #6699ff;
+      padding: 14px 18px;
+      margin-bottom: 18px;
+    }
+    .entriesBox h2 {
+      margin: 0 0 12px;
+      color: #66ccff;
+      font-size: 16px;
+      border-bottom: 1px solid #336699;
+      padding-bottom: 6px;
+    }
+
+    .entry { margin-bottom: 14px; padding-bottom: 14px; border-bottom: 1px dashed #334466; }
+    .entry:last-child { border-bottom: none; margin-bottom: 0; }
+    .entry .entryHead {
+      background: #001144;
+      padding: 5px 8px;
+      margin-bottom: 6px;
+      border-left: 3px solid #ff9900;
+    }
+    .entry .entryName  { color: #ffcc00; font-weight: bold; font-size: 14px; }
+    .entry .entryMeta  { font-size: 11px; color: #99aacc; margin-top: 2px; }
+    .entry .entryDate  { font-size: 11px; color: #669966; text-align: right; float: right; }
+    .entry .entryBody  { color: #ffffcc; line-height: 1.5; padding: 4px 8px; white-space: pre-wrap; }
+
+    .noEntries { color: #999966; font-style: italic; text-align: center; padding: 20px; }
+
+    /* ---- Footer ---- */
+    .footer {
+      text-align: center;
+      font-size: 10px;
+      color: #666699;
+      border-top: 1px solid #223366;
+      padding-top: 10px;
+    }
+    .homeLink { text-align: center; margin-bottom: 12px; }
+  </style>
+</head>
+<body>
+
+<div class="pageWrap">
+
+  <div class="banner">
+    <h1>&#10022; My WebObjects Guestbook &#10022;</h1>
+    <div class="sub">
+      Powered by <strong>Apple WebObjects 5.4.3</strong>
+      &nbsp;&bull;&nbsp;
+      Database: <strong>HSQLDB 2.7</strong>
+    </div>
+  </div>
+
+  <div class="counter">
+    You are visitor number&nbsp;
+    <strong><webobject name="EntryCount"></webobject></strong>
+    &nbsp;to sign this guestbook!
+  </div>
+
+  <!-- ========== Sign form ========== -->
+  <div class="signBox">
+    <h2>&#9733; Sign My Guestbook</h2>
+    <webobject name="SignForm">
+      <table>
+        <tr>
+          <td class="lbl">Your Name:*</td>
+          <td><webobject name="NameField"/></td>
+        </tr>
+        <tr>
+          <td class="lbl">E-Mail:</td>
+          <td><webobject name="EmailField"/></td>
+        </tr>
+        <tr>
+          <td class="lbl">Location:</td>
+          <td><webobject name="LocationField"/></td>
+        </tr>
+        <tr>
+          <td class="lbl">Message:*</td>
+          <td><webobject name="MessageField"/></td>
+        </tr>
+      </table>
+      <div class="submitRow">
+        <webobject name="SubmitBtn"/>
+      </div>
+      <div class="reqnote">* required fields</div>
+    </webobject>
+  </div>
+
+  <!-- ========== Entries ========== -->
+  <div class="entriesBox">
+    <h2>&#9733; Guestbook Entries</h2>
+
+    <webobject name="HasEntries">
+      <webobject name="EntryRep">
+        <div class="entry">
+          <div class="entryHead">
+            <span class="entryDate"><webobject name="EntryDate"/></span>
+            <span class="entryName"><webobject name="EntryName"/></span>
+            <div class="entryMeta">
+              <webobject name="ShowEmail">
+                &#9993;&nbsp;<a href="mailto:"><webobject name="EntryEmail"/></a>
+                &nbsp;
+              </webobject>
+              <webobject name="ShowLocation">
+                &#127757;&nbsp;<webobject name="EntryLocation"/>
+              </webobject>
+            </div>
+          </div>
+          <div class="entryBody"><webobject name="EntryMessage"/></div>
+        </div>
+      </webobject>
+    </webobject>
+
+    <webobject name="NoEntries">
+      <div class="noEntries">
+        No entries yet &mdash; be the first to sign!
+      </div>
+    </webobject>
+
+  </div>
+
+  <div class="homeLink">
+    <webobject name="HomeLink">&laquo; Back to HelloWorld.woa</webobject>
+  </div>
+
+  <div class="footer">
+    <em>This guestbook is proudly served by Apple WebObjects 5.4.3 on Tomcat 8.5</em><br>
+    &copy; 2001&ndash;2026 &mdash; Best viewed in Netscape Navigator 4 at 800&#215;600
+  </div>
+
+</div>
+</body>
+</html>
