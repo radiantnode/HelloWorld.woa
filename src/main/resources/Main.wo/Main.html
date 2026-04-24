@@ -3,43 +3,272 @@
 <html>
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  <title>HelloWorld</title>
+  <title>HelloWorld — WebObjects</title>
   <style type="text/css">
-    body      { background:#cccccc; font-family:Helvetica,Arial,sans-serif;
-                font-size:12px; margin:0; padding:20px; }
-    .frame    { width:520px; margin:50px auto; border:2px solid #555;
-                background:white; box-shadow:3px 3px 8px rgba(0,0,0,.45); }
-    .titlebar { background:#336699; color:white; padding:5px 12px;
-                font-size:13px; font-weight:bold; }
-    .body     { padding:22px 24px; }
-    h1        { font-size:20px; color:#003366; margin:0 0 14px; }
-    .info     { margin-top:18px; border-top:1px solid #ddd; padding-top:12px;
-                font-size:11px; color:#555; }
-    .info td  { padding:2px 8px 2px 0; }
-    tt        { font-size:11px; }
+    /* Mac OS X 10.3 Panther-era pinstripe background */
+    body {
+      margin: 0;
+      padding: 40px 20px;
+      font-family: "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, sans-serif;
+      font-size: 12px;
+      color: #000;
+      background-color: #9a9a9a;
+      background-image: repeating-linear-gradient(
+        90deg,
+        transparent,
+        transparent 1px,
+        rgba(255,255,255,0.07) 1px,
+        rgba(255,255,255,0.07) 2px
+      );
+    }
+
+    /* Mac OS X window chrome */
+    .window {
+      width: 480px;
+      margin: 0 auto;
+      border-radius: 6px;
+      box-shadow:
+        0 0 0 1px rgba(0,0,0,0.6),
+        0 12px 40px rgba(0,0,0,0.6),
+        inset 0 1px 0 rgba(255,255,255,0.4);
+      overflow: hidden;
+    }
+
+    /* Aqua title bar */
+    .titlebar {
+      background: linear-gradient(to bottom,
+        #c4c4c4 0%,
+        #b0b0b0 45%,
+        #a0a0a0 50%,
+        #acacac 100%
+      );
+      border-bottom: 1px solid #6e6e6e;
+      padding: 6px 12px 6px 10px;
+      display: table;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    /* Traffic light buttons */
+    .trafficlights {
+      display: table-cell;
+      vertical-align: middle;
+      white-space: nowrap;
+      width: 56px;
+    }
+    .dot {
+      display: inline-block;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      margin-right: 4px;
+      box-shadow: inset 0 1px 1px rgba(255,255,255,0.6), 0 1px 1px rgba(0,0,0,0.3);
+    }
+    .dot.close    { background: radial-gradient(circle at 40% 35%, #ff7c7c, #cc0000); border: 1px solid #a00; }
+    .dot.minimize { background: radial-gradient(circle at 40% 35%, #ffe980, #d4a000); border: 1px solid #a07800; }
+    .dot.maximize { background: radial-gradient(circle at 40% 35%, #80e860, #1c9600); border: 1px solid #0a7000; }
+
+    .titlebar-text {
+      display: table-cell;
+      vertical-align: middle;
+      text-align: center;
+      font-size: 12px;
+      font-weight: bold;
+      color: #333;
+      text-shadow: 0 1px 0 rgba(255,255,255,0.7);
+      letter-spacing: 0.01em;
+    }
+    .titlebar-spacer { display: table-cell; width: 56px; }
+
+    /* Toolbar strip (brushed metal) */
+    .toolbar {
+      background: linear-gradient(to bottom, #d8d8d8 0%, #c2c2c2 100%);
+      border-bottom: 1px solid #999;
+      padding: 6px 12px;
+      font-size: 11px;
+      color: #444;
+    }
+    .toolbar .app-icon {
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      background: linear-gradient(135deg, #6eb4ff, #0057d8);
+      border-radius: 3px;
+      vertical-align: middle;
+      margin-right: 5px;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.4);
+    }
+
+    /* Content area */
+    .content {
+      background: #ececec;
+      padding: 20px 20px 10px;
+      border-bottom: 1px solid #bbb;
+    }
+
+    h1 {
+      font-size: 18px;
+      font-weight: bold;
+      color: #1a1a1a;
+      margin: 0 0 6px;
+      text-shadow: 0 1px 0 rgba(255,255,255,0.9);
+    }
+    .subtitle {
+      font-size: 11px;
+      color: #555;
+      margin: 0 0 16px;
+    }
+
+    /* Aqua-style info rows */
+    .infoblock {
+      background: white;
+      border: 1px solid #c0c0c0;
+      border-radius: 4px;
+      box-shadow: inset 0 1px 3px rgba(0,0,0,0.08), 0 1px 0 rgba(255,255,255,0.8);
+      overflow: hidden;
+      margin-bottom: 14px;
+    }
+    .inforow {
+      display: table;
+      width: 100%;
+      box-sizing: border-box;
+      border-bottom: 1px solid #e0e0e0;
+    }
+    .inforow:last-child { border-bottom: none; }
+    .inforow:nth-child(even) { background: #f4f8ff; }
+    .infolabel {
+      display: table-cell;
+      padding: 5px 10px;
+      font-size: 11px;
+      color: #666;
+      width: 110px;
+      border-right: 1px solid #e0e0e0;
+      background: rgba(0,0,0,0.02);
+    }
+    .infoval {
+      display: table-cell;
+      padding: 5px 10px;
+      font-size: 11px;
+      color: #111;
+      font-family: "Courier New", Courier, monospace;
+    }
+    .infoval.plain {
+      font-family: "Lucida Grande", Helvetica, Arial, sans-serif;
+    }
+
+    /* Aqua push button */
+    .aqua-btn {
+      display: inline-block;
+      margin: 4px 6px 4px 0;
+      padding: 3px 16px 4px;
+      font-family: "Lucida Grande", Helvetica, Arial, sans-serif;
+      font-size: 11px;
+      font-weight: bold;
+      color: white;
+      text-decoration: none;
+      border-radius: 12px;
+      border: 1px solid #2058b8;
+      background: linear-gradient(to bottom,
+        #6db3f9 0%,
+        #3e8ef4 45%,
+        #1a6be8 50%,
+        #4090f6 100%
+      );
+      box-shadow:
+        0 1px 3px rgba(0,0,0,0.35),
+        inset 0 1px 0 rgba(255,255,255,0.4);
+      text-shadow: 0 -1px 0 rgba(0,0,80,0.4);
+    }
+    .aqua-btn-secondary {
+      color: #333;
+      border-color: #888;
+      background: linear-gradient(to bottom,
+        #f2f2f2 0%,
+        #dedede 45%,
+        #cecece 50%,
+        #e0e0e0 100%
+      );
+      text-shadow: 0 1px 0 rgba(255,255,255,0.8);
+    }
+
+    /* Footer strip */
+    .footbar {
+      background: linear-gradient(to bottom, #d0d0d0 0%, #c4c4c4 100%);
+      border-top: 1px solid #aaa;
+      padding: 6px 12px;
+      font-size: 10px;
+      color: #666;
+      text-align: center;
+    }
+    .resize-grip {
+      float: right;
+      width: 12px;
+      height: 12px;
+      background-image:
+        radial-gradient(circle 1px at 3px 9px, #999 1px, transparent 1px),
+        radial-gradient(circle 1px at 6px 6px, #999 1px, transparent 1px),
+        radial-gradient(circle 1px at 9px 3px, #999 1px, transparent 1px),
+        radial-gradient(circle 1px at 6px 9px, #999 1px, transparent 1px),
+        radial-gradient(circle 1px at 9px 6px, #999 1px, transparent 1px),
+        radial-gradient(circle 1px at 9px 9px, #999 1px, transparent 1px);
+    }
   </style>
 </head>
 <body>
-<div class="frame">
-  <div class="titlebar">WebObjects Application: <webobject name="AppName"></webobject></div>
-  <div class="body">
-    <h1>Hello, World!</h1>
-    <p>This page was served by <b>HelloWorld.woa</b>,
-       a real <b>WebObjects 5.4</b> application.</p>
-    <div class="info">
-      <table border="0" cellspacing="0">
-        <tr><td>Application:</td><td><b><webobject name="AppName"></webobject></b></td></tr>
-        <tr><td>Session&nbsp;ID:</td><td><b><tt><webobject name="SessionID"></webobject></tt></b></td></tr>
-        <tr><td>Framework:</td><td><b>WebObjects 5.4.3</b></td></tr>
-      </table>
+
+<div class="window">
+
+  <!-- Title bar with Aqua chrome -->
+  <div class="titlebar">
+    <div class="trafficlights">
+      <span class="dot close"></span>
+      <span class="dot minimize"></span>
+      <span class="dot maximize"></span>
     </div>
-    <p style="margin-top:18px; text-align:center;">
-      <webobject name="GuestbookLink">&#9733; Sign the Guestbook &#9733;</webobject>
-    </p>
-    <p style="margin-top:18px; text-align:center;">
-      <a href="https://github.com/radiantnode/HelloWorld.woa">Check out the GitHub repo!</a>
-    </p>
+    <div class="titlebar-text">HelloWorld.woa</div>
+    <div class="titlebar-spacer"></div>
   </div>
+
+  <!-- Toolbar -->
+  <div class="toolbar">
+    <span class="app-icon"></span>
+    WebObjects Application &mdash; <webobject name="AppName"></webobject>
+  </div>
+
+  <!-- Content -->
+  <div class="content">
+    <h1>Hello, World!</h1>
+    <p class="subtitle">Served by <b>HelloWorld.woa</b>, a real Apple WebObjects 5.4.3 application.</p>
+
+    <div class="infoblock">
+      <div class="inforow">
+        <span class="infolabel">Application</span>
+        <span class="infoval plain"><webobject name="AppName"></webobject></span>
+      </div>
+      <div class="inforow">
+        <span class="infolabel">Session ID</span>
+        <span class="infoval"><webobject name="SessionID"></webobject></span>
+      </div>
+      <div class="inforow">
+        <span class="infolabel">Framework</span>
+        <span class="infoval plain">WebObjects 5.4.3</span>
+      </div>
+      <div class="inforow">
+        <span class="infolabel">App Server</span>
+        <span class="infoval plain">Apache Tomcat 8.5</span>
+      </div>
+    </div>
+
+    <webobject name="GuestbookLink"><span class="aqua-btn">&#9733; Sign the Guestbook</span></webobject>
+    <a href="https://github.com/radiantnode/HelloWorld.woa" class="aqua-btn aqua-btn-secondary">GitHub Repo</a>
+  </div>
+
+  <!-- Footer / status bar -->
+  <div class="footbar">
+    <span class="resize-grip"></span>
+    Apple WebObjects 5.4.3 &bull; Java 11 &bull; Tomcat 8.5
+  </div>
+
 </div>
 </body>
 </html>
