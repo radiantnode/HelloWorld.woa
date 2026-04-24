@@ -26,7 +26,9 @@ You need Docker. That's it.
 docker compose up --build -d
 ```
 
-Then open [http://localhost](http://localhost). Tomcat redirects you straight to `HelloWorld.woa`.
+Then open [http://localhost:1085](http://localhost:1085). Tomcat redirects you straight to `HelloWorld.woa`.
+
+> Port 1085 is the traditional default WebObjects port — same as the old days.
 
 Want to watch the WO startup logs? They're glorious:
 
@@ -51,7 +53,7 @@ docker compose down
 | Runtime | Java 11 | The LTS era |
 | Container | Docker | Modern enough |
 
-The database is **HSQLDB** — a pure-Java embedded database that was everywhere in early-2000s Java enterprise apps. No separate container, no service to manage; it just writes files to a Docker volume and persists across restarts.
+The database is **HSQLDB** — a pure-Java embedded database that was everywhere in early-2000s Java enterprise apps. No separate container, no service to manage; it just writes files to `./data/guestbook/` and persists across restarts.
 
 (We tried FrontBase for maximum retro points. FrontBase's website is running a broken WebObjects app. The JDBC driver appears to have been erased from the internet. The x86 Docker image crashes during initialization on Apple Silicon. FrontBase wins the award for most retro by actually being inaccessible.)
 
@@ -59,9 +61,9 @@ The database is **HSQLDB** — a pure-Java embedded database that was everywhere
 
 The real highlight. Sign it. It looks exactly like it should.
 
-[http://localhost/WebObjects/HelloWorld.woa](http://localhost/WebObjects/HelloWorld.woa) → click the guestbook link.
+[http://localhost:1085/WebObjects/HelloWorld.woa](http://localhost:1085/WebObjects/HelloWorld.woa) → click the guestbook link.
 
-Entries persist in a Docker named volume (`guestbook_data`), so your messages survive container restarts. Just like a real 1999 guestbook server that somehow never gets rebooted.
+Entries persist in `./data/guestbook/` (bind-mounted into the container), so your messages survive restarts and you can inspect or back up the raw HSQLDB files any time. Just like a real 1999 guestbook server that somehow never gets rebooted.
 
 ## How it actually works
 
@@ -94,5 +96,6 @@ src/main/webapp/
   WEB-INF/web.xml         Servlet config + WOClasspath
 
 Dockerfile                Multi-stage: Maven build → Tomcat
-docker-compose.yml        Single service + guestbook volume
+docker-compose.yml        Single service, port 1085, bind-mounts ./data/guestbook
+data/guestbook/           HSQLDB database files (gitignored, .keep tracks the dir)
 ```
