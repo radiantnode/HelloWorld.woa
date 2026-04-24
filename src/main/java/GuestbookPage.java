@@ -9,6 +9,10 @@ public class GuestbookPage extends WOComponent {
     public String location;
     public String message;
 
+    public String nameError;
+    public String emailError;
+    public String messageError;
+
     public GuestbookEntry currentEntry;
 
     private int _visitorCount = -1;
@@ -33,10 +37,26 @@ public class GuestbookPage extends WOComponent {
     }
 
     public WOComponent submitEntry() {
-        if (authorName != null && !authorName.trim().isEmpty()
-                && message != null && !message.trim().isEmpty()) {
-            GuestbookDB.shared().addEntry(authorName.trim(), email, location, message.trim());
+        nameError = null;
+        emailError = null;
+        messageError = null;
+
+        if (authorName == null || authorName.trim().isEmpty()) {
+            nameError = "Name is required.";
         }
+        if (email != null && !email.trim().isEmpty()
+                && !email.trim().matches("[^@\\s]+@[^@\\s]+\\.[^@\\s]+")) {
+            emailError = "Please enter a valid email address.";
+        }
+        if (message == null || message.trim().isEmpty()) {
+            messageError = "Message is required.";
+        }
+
+        if (nameError != null || emailError != null || messageError != null) {
+            return null;
+        }
+
+        GuestbookDB.shared().addEntry(authorName.trim(), email, location, message.trim());
         authorName = null; email = null; location = null; message = null;
         return pageWithName("GuestbookPage");
     }

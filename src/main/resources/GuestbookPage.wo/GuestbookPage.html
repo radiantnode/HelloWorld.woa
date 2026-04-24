@@ -130,6 +130,20 @@
     }
     .form-field { display: table-cell; vertical-align: middle; }
 
+    .field-error {
+      font-size: 10px;
+      color: #b00000;
+      margin-top: 3px;
+      font-style: italic;
+    }
+    .field-error::before {
+      content: "⚠ ";
+    }
+    .input-error {
+      border-color: #cc0000 !important;
+      box-shadow: inset 0 1px 2px rgba(0,0,0,0.14), 0 0 0 2px rgba(200,0,0,0.15) !important;
+    }
+
     /* Aqua text fields */
     .form-field input[type=text] {
       width: 300px;
@@ -314,11 +328,11 @@
     <webobject name="SignForm">
       <div class="form-row">
         <span class="form-label">Name *</span>
-        <span class="form-field"><webobject name="NameField"/></span>
+        <span class="form-field"><webobject name="NameField"/><webobject name="ShowNameError"><div class="field-error"><webobject name="NameError"/></div></webobject></span>
       </div>
       <div class="form-row">
         <span class="form-label">E-Mail</span>
-        <span class="form-field"><webobject name="EmailField"/></span>
+        <span class="form-field"><webobject name="EmailField"/><webobject name="ShowEmailError"><div class="field-error"><webobject name="EmailError"/></div></webobject></span>
       </div>
       <div class="form-row">
         <span class="form-label">Location</span>
@@ -326,7 +340,7 @@
       </div>
       <div class="form-row">
         <span class="form-label">Message *</span>
-        <span class="form-field"><webobject name="MessageField"/></span>
+        <span class="form-field"><webobject name="MessageField"/><webobject name="ShowMessageError"><div class="field-error"><webobject name="MessageError"/></div></webobject></span>
       </div>
       <div class="form-actions">
         <span class="form-note">* required</span>

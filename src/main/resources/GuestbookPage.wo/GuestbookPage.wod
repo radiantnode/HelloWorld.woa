@@ -19,4 +19,11 @@ EntryEmail    : WOString     { value = currentEntry.email;    escapeHTML = true;
 ShowLocation  : WOConditional { condition = currentEntry.hasLocation; }
 EntryLocation : WOString     { value = currentEntry.location; escapeHTML = true; }
 
+ShowNameError    : WOConditional { condition = nameError; }
+NameError        : WOString      { value = nameError; escapeHTML = true; }
+ShowEmailError   : WOConditional { condition = emailError; }
+EmailError       : WOString      { value = emailError; escapeHTML = true; }
+ShowMessageError : WOConditional { condition = messageError; }
+MessageError     : WOString      { value = messageError; escapeHTML = true; }
+
 HomeLink    : WOHyperlink    { action = goHome; }
