@@ -1,7 +1,7 @@
 # HelloWorld.woa
 
 <p align="center">
-  <img src="images/webobjects-box.png" alt="WebObjects 5 Box" />
+  <img src="images/readme-hero.png" alt="Mac OS X + WebObjects 5 Box" />
 </p>
 
 A real, honest-to-goodness **Apple WebObjects 5.4.3** application running in a Docker container. Not a simulation. Not a tribute band. The actual JAR files, the actual NSBundle lookup, the actual `.wo` template files — all of it, running on your laptop in the year of our lord 2026.
