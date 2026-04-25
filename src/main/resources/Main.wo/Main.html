@@ -195,6 +195,17 @@
       color: #666;
       text-align: center;
     }
+    .warning-bar {
+      background: linear-gradient(to bottom, #fffbe6 0%, #fff3c0 100%);
+      border-bottom: 1px solid #d4b84a;
+      padding: 6px 12px;
+      font-size: 11px;
+      color: #6b4e00;
+      text-shadow: 0 1px 0 rgba(255,255,255,0.6);
+    }
+    .warning-bar::before {
+      content: "⚠  ";
+    }
     .resize-grip {
       float: right;
       width: 12px;
@@ -249,6 +260,8 @@
     </svg></span>
     WebObjects Application &mdash; <webobject name="AppName"></webobject>
   </div>
+
+  <webobject name="ShowWarning"><div class="warning-bar"><webobject name="WarningMsg"/></div></webobject>
 
   <!-- Content -->
   <div class="content">

@@ -17,6 +17,24 @@ public class Application extends WOApplication {
         System.out.println("[WO] HelloWorld.woa started — " + name() + " v" + number());
     }
 
+    private WOResponse expiredSessionResponse(WOContext ctx) {
+        Main page = (Main) pageWithName("Main", ctx);
+        page.warningMessage = "Your session has expired. Please try again.";
+        return page.generateResponse();
+    }
+
+    public WOResponse handleSessionCreationErrorInContext(WOContext ctx) {
+        return expiredSessionResponse(ctx);
+    }
+
+    public WOResponse handleSessionRestorationErrorInContext(WOContext ctx) {
+        return expiredSessionResponse(ctx);
+    }
+
+    public WOResponse handlePageRestorationErrorInContext(WOContext ctx) {
+        return expiredSessionResponse(ctx);
+    }
+
     public WOSession createSessionForRequest(WORequest request) {
         WOSession session = super.createSessionForRequest(request);
         synchronized (this) { _totalSessions++; }

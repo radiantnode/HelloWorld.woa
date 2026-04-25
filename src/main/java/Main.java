@@ -3,6 +3,8 @@ import com.webobjects.appserver.WOContext;
 
 public class Main extends WOComponent {
 
+    public String warningMessage;
+
     public Main(WOContext context) {
         super(context);
     }

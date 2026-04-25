@@ -43,7 +43,13 @@ WO operates in **WOROOT mode** (not WOJarBundle mode). Several non-obvious const
 - **WO form field names** are generated as element IDs (`5.1`, `5.3`, …), not the HTML `name` attribute from the WOD.
 - **WOGenericElement vs WOGenericContainer** — `WOGenericElement` renders self-closing (`<div/>`), which is invalid for block elements. Use `WOGenericContainer` when the tag needs a proper open/close pair (e.g. a `div` used as a progress bar fill).
 - **Validation pattern** — return `null` from an action method to stay on the current component with field values preserved. Use public String fields (e.g. `nameError`) as error messages; bind them with `WOConditional` + `WOString` pairs in the WOD.
-- **Session lifecycle** — `WOApplication` in 5.4.3 does not have `sessionDidCreate` / `sessionDidTimeOut`. Override `createSessionForRequest(WORequest)` to track session creation. Session termination notifications are not reliably exposed; avoid trying to track them.
+- **Session lifecycle** — `WOApplication` in 5.4.3 does not have `sessionDidCreate` / `sessionDidTimeOut`. Override `createSessionForRequest(WORequest)` to track session creation. Session termination notifications are not reliably exposed; avoid trying to track them. `application().activeSessionsCount()` is a real public method and returns a live count.
+- **Session error handlers** — WO 5.4.3 has three distinct methods to override for graceful session expiry handling (all return `WOResponse`):
+  - `handleSessionRestorationErrorInContext(WOContext)` — stale session ID in URL (most common; what fires when a user refreshes after a container restart)
+  - `handleSessionCreationErrorInContext(WOContext)` — WO cannot create a new session
+  - `handlePageRestorationErrorInContext(WOContext)` — session exists but page backtrack limit exceeded
+  
+  Without overrides, WO shows its own "Your session has timed out." error page. With overrides, redirect to `pageWithName("Main", ctx)` and set a `warningMessage` field before calling `generateResponse()`.
 - **WOSubmitButton class binding** — `WOSubmitButton` supports a `class` binding in WOD to apply CSS classes; use `-webkit-appearance: none; appearance: none` in CSS to strip the browser's native input styling.
 
 ### Guestbook (HSQLDB)
@@ -63,7 +69,7 @@ Guestbook entries persist via **HSQLDB 2.7** (embedded Java database, no separat
 
 | File | Purpose |
 |------|---------|
-| `src/main/java/Application.java` | WO entry point; overrides `createSessionForRequest` to count sessions |
+| `src/main/java/Application.java` | WO entry point; overrides `createSessionForRequest` to count sessions; overrides all three session error handlers to redirect to Main with a warning |
 | `src/main/java/Main.java` | Default page component |
 | `src/main/java/GuestbookPage.java` | Guestbook WOComponent (form + validation + entry list) |
 | `src/main/java/GuestbookDB.java` | HSQLDB JDBC data access (singleton) |

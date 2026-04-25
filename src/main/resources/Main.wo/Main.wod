@@ -2,3 +2,5 @@ AppName       : WOString    { value = appName;   }
 SessionID     : WOString    { value = sessionID; }
 GuestbookLink : WOHyperlink { action = guestbook; }
 StatsLink     : WOHyperlink { action = stats; }
+ShowWarning   : WOConditional { condition = warningMessage; }
+WarningMsg    : WOString      { value = warningMessage; escapeHTML = true; }
