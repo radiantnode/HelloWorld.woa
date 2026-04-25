@@ -58,6 +58,8 @@ docker compose down
 
 The database is **HSQLDB** — a pure-Java embedded database that was everywhere in early-2000s Java enterprise apps. No separate container, no service to manage; it just writes files to `./data/guestbook/` and persists across restarts.
 
+The WebObjects JARs are vendored directly in `lib/` as a Maven file-based local repository. The build has no dependency on WOCommunity or any external Maven repo beyond Central — it works air-gapped.
+
 🏆 _We tried FrontBase for maximum retro points. FrontBase's website is running a broken WebObjects app. The JDBC driver appears to have been erased from the internet. The x86 Docker image crashes during initialization on Apple Silicon. FrontBase wins the award for most retro by actually being inaccessible._
 
 ## The guestbook

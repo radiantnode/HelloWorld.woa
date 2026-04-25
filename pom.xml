@@ -12,9 +12,8 @@
 
   <repositories>
     <repository>
-      <id>wocommunity</id>
-      <name>WOCommunity Maven Repository</name>
-      <url>https://maven.wocommunity.org/content/groups/public</url>
+      <id>local-wo</id>
+      <url>file://${project.basedir}/lib</url>
     </repository>
   </repositories>
 

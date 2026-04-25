@@ -16,7 +16,7 @@ curl http://localhost:1085/WebObjects/HelloWorld.woa   # test
 
 ## Architecture
 
-Real **Apple WebObjects 5.4.3** application running in Tomcat 8.5 via Docker Compose. WO JARs come from the WOCommunity Maven repository (`https://maven.wocommunity.org/content/groups/public`).
+Real **Apple WebObjects 5.4.3** application running in Tomcat 8.5 via Docker Compose. WO JARs are vendored directly in `lib/` (Maven file-based local repository) — the build has no external dependencies beyond Maven Central.
 
 ### Build pipeline
 
