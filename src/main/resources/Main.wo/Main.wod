@@ -1,3 +1,4 @@
 AppName       : WOString    { value = appName;   }
 SessionID     : WOString    { value = sessionID; }
 GuestbookLink : WOHyperlink { action = guestbook; }
+StatsLink     : WOHyperlink { action = stats; }

@@ -17,7 +17,8 @@ This project proves it.
 ## What's in here
 
 - A **HelloWorld.woa** that serves a real WebObjects response with live session IDs and WO headers
-- A **classic guestbook** (yes, *that* kind of guestbook — dark background, Comic Sans, gold text) backed by a real database
+- A **classic guestbook** backed by a real database, with server-side form validation, persistent entries, and a visitor counter — all styled to match the Mac OS X Panther Aqua aesthetic
+- A **live app stats page** surfacing real JVM internals: heap usage with a color-coded progress bar, GC collector name and pause time, loaded class count, thread counts, system load average, and WebObjects session tracking
 - A **Docker Compose** setup so the whole thing spins up with one command
 
 ## Running it
@@ -61,11 +62,17 @@ The database is **HSQLDB** — a pure-Java embedded database that was everywhere
 
 ## The guestbook
 
-The real highlight. Sign it. It looks exactly like it should.
+The real highlight. Sign it.
 
 [http://localhost:1085/WebObjects/HelloWorld.woa](http://localhost:1085/WebObjects/HelloWorld.woa) → click the guestbook link.
 
 Entries persist in `./data/guestbook/` (bind-mounted into the container), so your messages survive restarts and you can inspect or back up the raw HSQLDB files any time. Just like a real 1999 guestbook server that somehow never gets rebooted.
+
+## The stats page
+
+Click **View App Stats** on the main page to see a live dashboard pulled straight from the JVM management beans and WebObjects internals — uptime, heap usage, GC pause time, loaded class count, thread counts, system load average, and session tracking. It's the kind of thing that would have lived behind a password-protected `/admin` link in 2003.
+
+[http://localhost:1085/WebObjects/HelloWorld.woa](http://localhost:1085/WebObjects/HelloWorld.woa) → click View App Stats.
 
 ## How it actually works
 
@@ -83,15 +90,17 @@ It took a while to figure all this out. The [CLAUDE.md](CLAUDE.md) has the gory 
 
 ```
 src/main/java/
-  Application.java        WO application entry point
+  Application.java        WO application entry point; tracks session count
   Main.java               Default page component
-  GuestbookPage.java      Guestbook component (form + entry list)
-  GuestbookDB.java        HSQLDB data access
+  GuestbookPage.java      Guestbook component (form + validation + entry list)
+  GuestbookDB.java        HSQLDB data access (singleton)
   GuestbookEntry.java     Data bean
+  StatsPage.java          Live stats component (JVM + WO + guestbook metrics)
 
 src/main/resources/
   Main.wo/                Hello World template + bindings
   GuestbookPage.wo/       Guestbook template + bindings
+  StatsPage.wo/           Stats dashboard template + bindings
   Properties              WO app config
   Info.plist              Bundle metadata
 

@@ -1,0 +1,234 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+          "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>App Statistics — HelloWorld.woa</title>
+  <style type="text/css">
+    body {
+      margin: 0;
+      padding: 30px 20px 50px;
+      font-family: "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, sans-serif;
+      font-size: 12px;
+      color: #000;
+      background-color: #9a9a9a;
+      background-image: repeating-linear-gradient(
+        90deg, transparent, transparent 1px,
+        rgba(255,255,255,0.07) 1px, rgba(255,255,255,0.07) 2px
+      );
+    }
+
+    .window {
+      width: 520px;
+      margin: 0 auto;
+      border-radius: 6px;
+      box-shadow: 0 0 0 1px rgba(0,0,0,0.6), 0 14px 44px rgba(0,0,0,0.65),
+                  inset 0 1px 0 rgba(255,255,255,0.4);
+      overflow: hidden;
+    }
+
+    .titlebar {
+      background: linear-gradient(to bottom, #c4c4c4 0%, #b0b0b0 45%, #a0a0a0 50%, #acacac 100%);
+      border-bottom: 1px solid #6e6e6e;
+      padding: 6px 12px 6px 10px;
+      display: table;
+      width: 100%;
+      box-sizing: border-box;
+    }
+    .trafficlights { display: table-cell; vertical-align: middle; white-space: nowrap; width: 56px; }
+    .dot {
+      display: inline-block; width: 12px; height: 12px; border-radius: 50%; margin-right: 4px;
+      box-shadow: inset 0 1px 1px rgba(255,255,255,0.6), 0 1px 1px rgba(0,0,0,0.3);
+    }
+    .dot.close    { background: radial-gradient(circle at 40% 35%, #ff7c7c, #cc0000); border: 1px solid #a00; }
+    .dot.minimize { background: radial-gradient(circle at 40% 35%, #ffe980, #d4a000); border: 1px solid #a07800; }
+    .dot.maximize { background: radial-gradient(circle at 40% 35%, #80e860, #1c9600); border: 1px solid #0a7000; }
+    .titlebar-text {
+      display: table-cell; vertical-align: middle; text-align: center;
+      font-size: 12px; font-weight: bold; color: #333;
+      text-shadow: 0 1px 0 rgba(255,255,255,0.7);
+    }
+    .titlebar-right { display: table-cell; width: 56px; }
+
+    .toolbar {
+      background: linear-gradient(to bottom, #d8d8d8 0%, #c2c2c2 100%);
+      border-bottom: 1px solid #999;
+      padding: 5px 12px;
+    }
+
+    .aqua-btn {
+      display: inline-block; padding: 3px 16px 4px;
+      font-family: "Lucida Grande", Helvetica, Arial, sans-serif;
+      font-size: 11px; font-weight: bold; color: white; text-decoration: none;
+      border-radius: 12px; border: 1px solid #2058b8;
+      background: linear-gradient(to bottom, #6db3f9 0%, #3e8ef4 45%, #1a6be8 50%, #4090f6 100%);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.4);
+      text-shadow: 0 -1px 0 rgba(0,0,80,0.4);
+    }
+    .aqua-btn-secondary {
+      color: #333; border-color: #888;
+      background: linear-gradient(to bottom, #f2f2f2 0%, #dedede 45%, #cecece 50%, #e0e0e0 100%);
+      text-shadow: 0 1px 0 rgba(255,255,255,0.8); font-weight: normal;
+    }
+    .aqua-btn-sm { padding: 2px 12px 3px; font-size: 11px; }
+
+    .section-header {
+      background: linear-gradient(to bottom, #e2e2e2 0%, #d2d2d2 100%);
+      border-top: 1px solid #c8c8c8; border-bottom: 1px solid #b0b0b0;
+      padding: 5px 12px; font-size: 11px; font-weight: bold; color: #444;
+      text-shadow: 0 1px 0 rgba(255,255,255,0.8);
+    }
+
+    .infoblock { background: #ececec; }
+    .inforow {
+      display: table; width: 100%; box-sizing: border-box;
+      border-bottom: 1px solid #d8d8d8;
+    }
+    .inforow:last-child { border-bottom: none; }
+    .inforow:nth-child(even) { background: rgba(0,0,0,0.03); }
+    .infolabel {
+      display: table-cell; padding: 5px 10px 5px 14px;
+      font-size: 11px; color: #555; width: 130px;
+    }
+    .infoval {
+      display: table-cell; padding: 5px 14px 5px 0;
+      font-size: 11px; color: #111;
+      font-family: "Courier New", Courier, monospace;
+    }
+    .infoval.plain {
+      font-family: "Lucida Grande", Helvetica, Arial, sans-serif;
+    }
+
+    /* Heap usage bar */
+    .heap-track {
+      display: inline-block; width: 160px; height: 9px;
+      background: #ccc; border-radius: 4px; vertical-align: middle;
+      box-shadow: inset 0 1px 2px rgba(0,0,0,0.25);
+      overflow: hidden; margin-left: 8px;
+    }
+    .heap-fill {
+      height: 100%; border-radius: 4px;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.3);
+    }
+
+    .footbar {
+      background: linear-gradient(to bottom, #d0d0d0 0%, #c4c4c4 100%);
+      border-top: 1px solid #aaa; padding: 5px 12px;
+      font-size: 10px; color: #555; text-align: center;
+    }
+    .resize-grip {
+      float: right; width: 12px; height: 12px;
+      background-image:
+        radial-gradient(circle 1px at 3px 9px, #999 1px, transparent 1px),
+        radial-gradient(circle 1px at 6px 6px, #999 1px, transparent 1px),
+        radial-gradient(circle 1px at 9px 3px, #999 1px, transparent 1px),
+        radial-gradient(circle 1px at 6px 9px, #999 1px, transparent 1px),
+        radial-gradient(circle 1px at 9px 6px, #999 1px, transparent 1px),
+        radial-gradient(circle 1px at 9px 9px, #999 1px, transparent 1px);
+    }
+  </style>
+</head>
+<body>
+
+<div class="window">
+
+  <div class="titlebar">
+    <div class="trafficlights">
+      <span class="dot close"></span>
+      <span class="dot minimize"></span>
+      <span class="dot maximize"></span>
+    </div>
+    <div class="titlebar-text">App Statistics &mdash; HelloWorld.woa</div>
+    <div class="titlebar-right"></div>
+  </div>
+
+  <div class="toolbar">
+    <webobject name="HomeLink"><span class="aqua-btn aqua-btn-secondary aqua-btn-sm">&lsaquo; Back</span></webobject>
+  </div>
+
+  <!-- JVM Runtime -->
+  <div class="section-header">JVM Runtime</div>
+  <div class="infoblock">
+    <div class="inforow">
+      <span class="infolabel">Uptime</span>
+      <span class="infoval plain"><webobject name="JvmUptime"/></span>
+    </div>
+    <div class="inforow">
+      <span class="infolabel">VM</span>
+      <span class="infoval plain"><webobject name="VmName"/></span>
+    </div>
+    <div class="inforow">
+      <span class="infolabel">Java Version</span>
+      <span class="infoval"><webobject name="JavaVersion"/></span>
+    </div>
+    <div class="inforow">
+      <span class="infolabel">CPUs</span>
+      <span class="infoval plain"><webobject name="Processors"/></span>
+    </div>
+    <div class="inforow">
+      <span class="infolabel">System Load</span>
+      <span class="infoval plain"><webobject name="SystemLoad"/></span>
+    </div>
+    <div class="inforow">
+      <span class="infolabel">Heap</span>
+      <span class="infoval plain">
+        <webobject name="HeapUsedMB"/> MB of <webobject name="HeapMaxMB"/> MB
+        <span class="heap-track"><webobject name="HeapBar"></webobject></span>
+      </span>
+    </div>
+    <div class="inforow">
+      <span class="infolabel">Non-Heap</span>
+      <span class="infoval plain"><webobject name="NonHeapUsedMB"/> MB</span>
+    </div>
+    <div class="inforow">
+      <span class="infolabel">Classes Loaded</span>
+      <span class="infoval plain"><webobject name="LoadedClasses"/></span>
+    </div>
+    <div class="inforow">
+      <span class="infolabel">GC</span>
+      <span class="infoval plain"><webobject name="GcSummary"/></span>
+    </div>
+    <div class="inforow">
+      <span class="infolabel">Threads</span>
+      <span class="infoval plain"><webobject name="Threads"/></span>
+    </div>
+  </div>
+
+  <!-- WebObjects -->
+  <div class="section-header">WebObjects 5.4.3</div>
+  <div class="infoblock">
+    <div class="inforow">
+      <span class="infolabel">Application</span>
+      <span class="infoval plain"><webobject name="AppName"/></span>
+    </div>
+    <div class="inforow">
+      <span class="infolabel">Version</span>
+      <span class="infoval plain"><webobject name="AppVersion"/></span>
+    </div>
+    <div class="inforow">
+      <span class="infolabel">Sessions Created</span>
+      <span class="infoval plain"><webobject name="TotalSessions"/></span>
+    </div>
+  </div>
+
+  <!-- Guestbook -->
+  <div class="section-header">Guestbook</div>
+  <div class="infoblock">
+    <div class="inforow">
+      <span class="infolabel">Entries Signed</span>
+      <span class="infoval plain"><webobject name="GuestbookEntries"/></span>
+    </div>
+    <div class="inforow">
+      <span class="infolabel">Total Visitors</span>
+      <span class="infoval plain"><webobject name="TotalVisitors"/></span>
+    </div>
+  </div>
+
+  <div class="footbar">
+    <span class="resize-grip"></span>
+    Apple WebObjects 5.4.3 &bull; Java 11 &bull; Tomcat 8.5
+  </div>
+
+</div>
+</body>
+</html>

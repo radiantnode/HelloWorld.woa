@@ -109,6 +109,18 @@ public class GuestbookDB {
         }
     }
 
+    public synchronized int currentVisitorCount() {
+        try {
+            Statement st = conn.createStatement();
+            ResultSet rs = st.executeQuery("SELECT count FROM VISITOR_COUNT");
+            int n = rs.next() ? rs.getInt(1) : 0;
+            rs.close(); st.close();
+            return n;
+        } catch (SQLException e) {
+            return 0;
+        }
+    }
+
     public synchronized int entryCount() {
         try {
             Statement st = conn.createStatement();

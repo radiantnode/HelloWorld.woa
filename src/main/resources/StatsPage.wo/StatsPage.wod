@@ -1,0 +1,21 @@
+HomeLink       : WOHyperlink { action = goHome; }
+
+JvmUptime      : WOString { value = jvmUptime;           }
+VmName         : WOString { value = vmName;               }
+JavaVersion    : WOString { value = javaVersion;          }
+Processors     : WOString { value = availableProcessors;  }
+SystemLoad     : WOString { value = systemLoad;           }
+HeapUsedMB     : WOString { value = heapUsedMB;           }
+HeapMaxMB      : WOString { value = heapMaxMB;            }
+HeapBar        : WOGenericContainer { elementName = "div"; class = "heap-fill"; style = heapBarStyle; }
+NonHeapUsedMB  : WOString { value = nonHeapUsedMB;        }
+LoadedClasses  : WOString { value = loadedClasses;        }
+GcSummary      : WOString { value = gcSummary;            }
+Threads        : WOString { value = threads;              }
+
+AppName        : WOString { value = appName;     }
+AppVersion     : WOString { value = appVersion;  }
+TotalSessions  : WOString { value = totalSessions; }
+
+GuestbookEntries : WOString { value = guestbookEntries; }
+TotalVisitors    : WOString { value = totalVisitors;    }

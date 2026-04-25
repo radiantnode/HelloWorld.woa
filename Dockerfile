@@ -21,6 +21,7 @@ RUN rm -rf /usr/local/tomcat/webapps/*
 RUN mkdir -p /opt/woapps/HelloWorld.woa/Contents/Resources/Java \
              /opt/woapps/HelloWorld.woa/Contents/Resources/Main.wo \
              /opt/woapps/HelloWorld.woa/Contents/Resources/GuestbookPage.wo \
+             /opt/woapps/HelloWorld.woa/Contents/Resources/StatsPage.wo \
              /data/guestbook
 
 COPY src/main/resources/Info.plist \
@@ -38,6 +39,11 @@ COPY src/main/resources/GuestbookPage.wo/GuestbookPage.html \
      /opt/woapps/HelloWorld.woa/Contents/Resources/GuestbookPage.wo/GuestbookPage.html
 COPY src/main/resources/GuestbookPage.wo/GuestbookPage.wod \
      /opt/woapps/HelloWorld.woa/Contents/Resources/GuestbookPage.wo/GuestbookPage.wod
+
+COPY src/main/resources/StatsPage.wo/StatsPage.html \
+     /opt/woapps/HelloWorld.woa/Contents/Resources/StatsPage.wo/StatsPage.html
+COPY src/main/resources/StatsPage.wo/StatsPage.wod \
+     /opt/woapps/HelloWorld.woa/Contents/Resources/StatsPage.wo/StatsPage.wod
 
 COPY --from=build /app/target/HelloWorld-1.0.war /usr/local/tomcat/webapps/ROOT.war
 EXPOSE 8080

@@ -18,4 +18,8 @@ public class Main extends WOComponent {
     public WOComponent guestbook() {
         return pageWithName("GuestbookPage");
     }
+
+    public WOComponent stats() {
+        return pageWithName("StatsPage");
+    }
 }
