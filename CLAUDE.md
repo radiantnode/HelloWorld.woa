@@ -7,7 +7,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 Always use `docker compose` for building, running, or testing. Never run services directly on the host.
 
 ```bash
-docker compose up --build -d   # build and start
+GIT_REVISION=$(git rev-parse HEAD) docker compose up --build -d   # build and start (embeds git hash)
+docker compose up --build -d   # build and start (revision = "unknown")
 docker compose logs -f         # tail logs
 docker compose down            # stop
 curl http://localhost:1085/WebObjects/HelloWorld.woa   # test
@@ -24,6 +25,7 @@ Real **Apple WebObjects 5.4.3** application running in Tomcat 8.5 via Docker Com
    - `HelloWorld.jar` in `WEB-INF/lib` — needed so the servlet context classloader can resolve component classes when NSBundle delegates class lookup to it.
    - `.class` files **excluded** from `WEB-INF/classes` (via `packagingExcludes`) to avoid the web app classloader loading app classes there first.
 3. The Dockerfile copies the `.woa` filesystem bundle structure into `/opt/woapps/HelloWorld.woa/` and also copies `HelloWorld.jar` into `Contents/Resources/Java/`.
+4. The `GIT_REVISION` build arg (passed via `docker-compose.yml` from the env var of the same name) is written to `/opt/woapps/HelloWorld.woa/REVISION` at image build time. `StatsPage.java` reads this file at request time and renders it as a GitHub commit link.
 
 ### WOROOT mode — critical details
 
@@ -62,7 +64,7 @@ Guestbook entries persist via **HSQLDB 2.7** (embedded Java database, no separat
 
 `StatsPage.java` surfaces live metrics via `java.lang.management` MXBeans and `Application.app()`:
 - **JVM**: uptime, VM name, Java version, CPU count, system load average, heap used/max (with color-coded bar via `WOGenericContainer`), non-heap/metaspace, loaded class count, GC collector name + collection count + total pause ms, live/peak thread count
-- **WebObjects**: app name, version (`application().number()`, falls back to `"1.0"` if `-1`), sessions created (tracked via `createSessionForRequest` override in `Application.java`)
+- **WebObjects**: app name, version (`application().number()`, falls back to `"1.0"` if `-1`), git revision (read from `/opt/woapps/HelloWorld.woa/REVISION`, rendered as a GitHub commit link), sessions created (tracked via `createSessionForRequest` override in `Application.java`)
 - **Guestbook**: entry count, total visitor count
 
 ### Key files

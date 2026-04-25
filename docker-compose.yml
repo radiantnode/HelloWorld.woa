@@ -1,6 +1,9 @@
 services:
   helloworld:
-    build: .
+    build:
+      context: .
+      args:
+        GIT_REVISION: "${GIT_REVISION:-unknown}"
     ports:
       - "1085:8080"
     restart: unless-stopped

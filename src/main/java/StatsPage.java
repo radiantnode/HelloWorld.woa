@@ -1,6 +1,8 @@
 import com.webobjects.appserver.*;
 import java.lang.management.*;
 import java.util.List;
+import java.io.*;
+import java.nio.file.*;
 
 public class StatsPage extends WOComponent {
 
@@ -98,6 +100,24 @@ public class StatsPage extends WOComponent {
 
     public int totalSessions() {
         return Application.app().totalSessions();
+    }
+
+    public String gitRevision() {
+        try {
+            String rev = new String(Files.readAllBytes(Paths.get("/opt/woapps/HelloWorld.woa/REVISION"))).trim();
+            return rev.isEmpty() ? "unknown" : rev;
+        } catch (IOException e) { return "unknown"; }
+    }
+
+    public String gitRevisionShort() {
+        String rev = gitRevision();
+        return (rev.length() > 7) ? rev.substring(0, 7) : rev;
+    }
+
+    public String gitRevisionUrl() {
+        String rev = gitRevision();
+        if (rev.equals("unknown")) return "https://github.com/radiantnode/HelloWorld.woa";
+        return "https://github.com/radiantnode/HelloWorld.woa/commit/" + rev;
     }
 
     // --- Guestbook ---

@@ -11,6 +11,7 @@ RUN mvn package -DskipTests -q
 # --- runtime stage ---
 # Tomcat 8.5 = Servlet 3.1, compatible with WebObjects 5.4.3
 FROM tomcat:8.5-jdk11
+ARG GIT_REVISION=unknown
 RUN rm -rf /usr/local/tomcat/webapps/*
 
 # .woa filesystem bundle (WOROOT mode — see CLAUDE.md for details)
@@ -21,6 +22,7 @@ COPY src/main/resources/GuestbookPage.wo/ /opt/woapps/HelloWorld.woa/Contents/Re
 COPY src/main/resources/StatsPage.wo/     /opt/woapps/HelloWorld.woa/Contents/Resources/StatsPage.wo/
 COPY --from=build /app/target/bundles/HelloWorld.jar \
                   /opt/woapps/HelloWorld.woa/Contents/Resources/Java/
+RUN echo "$GIT_REVISION" > /opt/woapps/HelloWorld.woa/REVISION
 
 RUN mkdir -p /data/guestbook
 

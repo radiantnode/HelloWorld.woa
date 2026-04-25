@@ -13,9 +13,11 @@ LoadedClasses  : WOString { value = loadedClasses;        }
 GcSummary      : WOString { value = gcSummary;            }
 Threads        : WOString { value = threads;              }
 
-AppName        : WOString { value = appName;     }
-AppVersion     : WOString { value = appVersion;  }
-TotalSessions  : WOString { value = totalSessions; }
+AppName           : WOString { value = appName;          }
+AppVersion        : WOString { value = appVersion;       }
+TotalSessions     : WOString { value = totalSessions;    }
+GitRevisionLink   : WOHyperlink { href = gitRevisionUrl; }
+GitRevisionShort  : WOString { value = gitRevisionShort; }
 
 GuestbookEntries : WOString { value = guestbookEntries; }
 TotalVisitors    : WOString { value = totalVisitors;    }

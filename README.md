@@ -18,7 +18,7 @@ This project proves it.
 
 - A **HelloWorld.woa** that serves a real WebObjects response with live session IDs and WO headers
 - A **classic guestbook** backed by a real database, with server-side form validation, persistent entries, and a visitor counter — all styled to match the Mac OS X Panther Aqua aesthetic — plus graceful session expiry handling that redirects back to the main page with a warning instead of WO's raw error screen
-- A **live app stats page** surfacing real JVM internals: heap usage with a color-coded progress bar, GC collector name and pause time, loaded class count, thread counts, system load average, and WebObjects session tracking
+- A **live app stats page** surfacing real JVM internals: heap usage with a color-coded progress bar, GC collector name and pause time, loaded class count, thread counts, system load average, WebObjects session tracking, and a git revision link back to the exact commit
 - A **Docker Compose** setup so the whole thing spins up with one command
 
 ## Running it
@@ -26,7 +26,7 @@ This project proves it.
 You need Docker. That's it.
 
 ```bash
-docker compose up --build -d
+GIT_REVISION=$(git rev-parse HEAD) docker compose up --build -d
 ```
 
 Then open [http://localhost:1085](http://localhost:1085). Tomcat redirects you straight to `HelloWorld.woa`.
@@ -70,7 +70,7 @@ Entries persist in `./data/guestbook/` (bind-mounted into the container), so you
 
 ## The stats page
 
-Click **View App Stats** on the main page to see a live dashboard pulled straight from the JVM management beans and WebObjects internals — uptime, heap usage, GC pause time, loaded class count, thread counts, system load average, and session tracking. It's the kind of thing that would have lived behind a password-protected `/admin` link in 2003.
+Click **View App Stats** on the main page to see a live dashboard pulled straight from the JVM management beans and WebObjects internals — uptime, heap usage, GC pause time, loaded class count, thread counts, system load average, session tracking, and a clickable git revision link to the exact GitHub commit the image was built from. It's the kind of thing that would have lived behind a password-protected `/admin` link in 2003.
 
 [http://localhost:1085/WebObjects/HelloWorld.woa](http://localhost:1085/WebObjects/HelloWorld.woa) → click View App Stats.
 
